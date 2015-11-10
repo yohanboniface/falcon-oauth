@@ -1,0 +1,2 @@
+falcon==0.3.0
+oauthlib==1.0.1
