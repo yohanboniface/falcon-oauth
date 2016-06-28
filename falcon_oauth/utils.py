@@ -25,7 +25,12 @@ def extract_params(req):
         # reset it.
         # See https://github.com/falconry/falcon/pull/649.
         req.stream.seek(0)
-    return req.uri, req.method, req.stream.read(), req.headers
+    body = req.stream.read()
+    if not body:
+        # Body is non seekable and someone already consumed it?
+        # OAuthlib accepts also dict, so let's fallback to this.
+        body = req.params
+    return req.uri, req.method, body, req.headers
 
 
 def patch_response(resp, headers, body, status):
