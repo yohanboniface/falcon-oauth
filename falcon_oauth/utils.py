@@ -20,11 +20,6 @@ def decode_base64(text, encoding='utf-8'):
 
 
 def extract_params(req):
-    if hasattr(req.stream, 'seek'):
-        # When consuming body for urlencoded form parsing, Falcon does not
-        # reset it.
-        # See https://github.com/falconry/falcon/pull/649.
-        req.stream.seek(0)
     body = req.stream.read()
     if not body:
         # Body is non seekable and someone already consumed it?
