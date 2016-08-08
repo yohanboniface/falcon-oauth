@@ -1,4 +1,5 @@
 import base64
+from datetime import datetime, timezone
 
 import falcon
 from oauthlib.common import to_unicode, bytes_type
@@ -48,3 +49,7 @@ def maybe_args(decorator):
                 return decorator(klass, method, *args)
             return real_decorator
     return wrapped_decorator
+
+
+def utcnow():
+    return datetime.now(timezone.utc)

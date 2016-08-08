@@ -1,11 +1,10 @@
-import datetime
 import logging
 import os
 
 from oauthlib.common import to_unicode
 from oauthlib.oauth2 import RequestValidator
 
-from ...utils import decode_base64
+from ...utils import decode_base64, utcnow
 
 log = logging.getLogger('falcon_oauth')
 
@@ -375,7 +374,7 @@ class OAuthValidator(RequestValidator):
             return False
 
         # validate expires
-        if datetime.datetime.utcnow() > tok.expires:
+        if utcnow() > tok.expires:
             msg = 'Bearer token is expired.'
             request.error_message = msg
             log.debug(msg)
@@ -452,7 +451,7 @@ class OAuthValidator(RequestValidator):
             log.debug('Grant not found.')
             return False
         if hasattr(grant, 'expires') and \
-           datetime.datetime.utcnow() > grant.expires:
+           utcnow() > grant.expires:
             log.debug('Grant is expired.')
             return False
 

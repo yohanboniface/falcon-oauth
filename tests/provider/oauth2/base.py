@@ -1,12 +1,23 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from functools import wraps
 
 import falcon
 from falcon_oauth.provider.oauth2 import OAuthProvider
+from falcon_oauth.utils import utcnow
 import peewee
+from dateutil import parser
 
 
 db = peewee.SqliteDatabase(':memory:')
+
+
+class DateTimeField(peewee.DateTimeField):
+    # Sqlite does not parse offset in datetime…
+
+    def python_value(self, value):
+        if value:
+            return parser.parse(value)
+        return value
 
 
 class BaseModel(peewee.Model):
@@ -64,11 +75,11 @@ class Token(BaseModel):
     access_token = peewee.CharField(max_length=255)
     refresh_token = peewee.CharField(max_length=255, default="")
     scope = peewee.CharField(max_length=255, default="")
-    expires = peewee.DateTimeField()
+    expires = DateTimeField()
 
     def __init__(self, **kwargs):
         expires_in = kwargs.pop('expires_in', 60 * 60)
-        kwargs['expires'] = datetime.now() + timedelta(seconds=expires_in)
+        kwargs['expires'] = utcnow() + timedelta(seconds=expires_in)
         super().__init__(**kwargs)
 
     @property
@@ -86,7 +97,7 @@ class Token(BaseModel):
         """
         Check token expiration with timezone awareness
         """
-        return datetime.now() >= self.expires
+        return utcnow() >= self.expires
 
     def allow_scopes(self, scopes):
         """
@@ -108,7 +119,7 @@ class Grant(BaseModel):
     code = peewee.CharField(max_length=255, index=True, null=False)
     redirect_uri = peewee.CharField()
     scope = peewee.CharField(null=True)
-    expires = peewee.DateTimeField()
+    expires = DateTimeField()
 
     @property
     def scopes(self):
@@ -168,7 +179,7 @@ def grantgetter(client_id, code):
 
 @auth.grantsetter
 def grantsetter(client_id, code, req, *args, **kwargs):
-    expires = datetime.utcnow() + timedelta(seconds=100)
+    expires = utcnow() + timedelta(seconds=100)
     Grant.create(
         client_id=client_id,
         code=code['code'],
@@ -177,5 +188,3 @@ def grantsetter(client_id, code, req, *args, **kwargs):
         user_id=req.context['user'].id,
         expires=expires,
     )
-
-
