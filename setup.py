@@ -38,6 +38,7 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     keywords='falcon oauth',
+    test_suite='tests',
     packages=find_packages(exclude=['tests']),
     install_requires=install_requires,
     extras_require={'test': ['pytest'], 'docs': 'mkdocs'},
