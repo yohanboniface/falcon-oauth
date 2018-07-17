@@ -1,6 +1,6 @@
 # Falcon-Oauth
 
-Oauth wrapper around [oauthlib](https://github.com/idan/oauthlib/) for Falcon.
+Oauth wrapper around [oauthlib](https://github.com/oauthlib/oauthlib/) for Falcon.
 
 Based on https://github.com/lepture/flask-oauthlib/.
 

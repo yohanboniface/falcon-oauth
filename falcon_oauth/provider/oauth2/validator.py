@@ -12,7 +12,7 @@ log = logging.getLogger('falcon_oauth')
 class OAuthValidator(RequestValidator):
     """Subclass of Request Validator.
 
-    See https://github.com/idan/oauthlib/blob/master/oauthlib/oauth2/rfc6749/request_validator.py  # noqa
+    See https://github.com/oauthlib/oauthlib/blob/master/oauthlib/oauth2/rfc6749/request_validator.py  # noqa
     and https://oauthlib.readthedocs.org/en/latest/oauth2/validator.html
 
     :param clientgetter: a function to get client object

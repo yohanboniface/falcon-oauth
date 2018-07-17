@@ -12,7 +12,7 @@ db = peewee.SqliteDatabase(':memory:')
 
 
 class DateTimeField(peewee.DateTimeField):
-    # Sqlite does not parse offset in datetime…
+    # Sqlite does not parse offset in datetime
 
     def python_value(self, value):
         if value:
