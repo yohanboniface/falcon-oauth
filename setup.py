@@ -35,7 +35,7 @@ setup(
         'Topic :: Scientific/Engineering :: GIS',
 
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.6',
     ],
     keywords='falcon oauth',
     test_suite='tests',
