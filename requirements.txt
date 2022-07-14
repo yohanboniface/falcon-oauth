@@ -1,2 +1,0 @@
-falcon==1.0.0
-oauthlib==1.1.2
